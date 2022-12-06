@@ -33,6 +33,22 @@ $data = $queryString->fetchAll(PDO::FETCH_ASSOC); // array assoc
         </div>
     </div>
 </div>
+<div class="search">
+    <div class=" row lg-1">
+            <div class="col-lg-12 row m-4">
+                <div class="page-header float-left">
+                    <form action="all_students.php" method="GET" class="col-m-12">
+        <input class="col-m-4" type="text" placeholder="Search the stu..." name="search">
+        <button class="col-m-4" type="submit">Search</button>
+    </form>
+                </div>
+                <p class="col-m-4">
+                    <?php if(isset($_GET['search']))
+                    echo "search for ".$_GET['search'];?>
+                </p>
+            </div>
+        </div>
+</div>
 <div class="content">
     <div class="animated fadeIn">
         <div class="row">
