@@ -8,5 +8,5 @@ is a vuln web site to XSS and SQLi
 
 ### sotred XXS
 > stored XSS found in **add_student.php page at Address field** 
-> u can insert `<script>alertt(2)</script>` in Address field as a payload 
+> u can insert `<script>alert(2);</script>` in Address field as a payload 
 > to test the vuln go to **all_students.php page** 
