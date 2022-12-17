@@ -43,11 +43,19 @@ $data = $queryString->fetchAll(PDO::FETCH_ASSOC); // array assoc
     </form>
                 </div>
                 <p class="col-m-4">
-                    <?php if(isset($_GET['search']))
-                    echo "search for ".$_GET['search'];?>
+                    <?php if(isset($_GET['search'])){
+                        echo "search for ".$_GET['search'];
+                        $queryString = $connection->prepare("SELECT * from students where stu_name like '%".$_GET['search']."%'"); //object
+                        $queryString->execute();
+                        $data = $queryString->fetchAll(PDO::FETCH_ASSOC); // array assoc
+                    }
+                    ?>
                 </p>
             </div>
         </div>
+        <?php
+        //simple payload:<image src =q onerror=prompt(8)>
+        ?>
 </div>
 <div class="content">
     <div class="animated fadeIn">

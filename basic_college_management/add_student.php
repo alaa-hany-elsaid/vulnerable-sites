@@ -15,6 +15,7 @@ if (isset($_POST['save'])) {
         $std_phone = validate($_POST['std_phone']);
         $std_email = validate($_POST['std_email']);
         $std_address = /*validate(*/$_POST['std_address'];//);
+        //simple payload: <script>alert(1);</script>
 
         if (!filter_var($std_email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = "please enter valid email";
