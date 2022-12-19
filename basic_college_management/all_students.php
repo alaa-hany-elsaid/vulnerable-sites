@@ -1,4 +1,8 @@
 <?php
+// if(!isset($_SESSION['id'])){
+//     header("Location: page-login.php");
+//     exit();
+// }
 include_once 'connection.php'; // connected
 include_once 'navbar.php';
 $queryString = $connection->prepare("SELECT * FROM students"); //object
@@ -35,27 +39,33 @@ $data = $queryString->fetchAll(PDO::FETCH_ASSOC); // array assoc
 </div>
 <div class="search">
     <div class=" row lg-1">
-            <div class="col-lg-12 row m-4">
-                <div class="page-header float-left">
-                    <form action="all_students.php" method="GET" class="col-m-12">
-        <input class="col-m-4" type="text" placeholder="Search the stu..." name="search">
-        <button class="col-m-4" type="submit">Search</button>
-    </form>
-                </div>
-                <p class="col-m-4">
-                    <?php if(isset($_GET['search'])){
-                        echo "search for ".$_GET['search'];
-                        $queryString = $connection->prepare("SELECT * from students where stu_name like '%".$_GET['search']."%'"); //object
-                        $queryString->execute();
-                        $data = $queryString->fetchAll(PDO::FETCH_ASSOC); // array assoc
-                    }
-                    ?>
-                </p>
+        <div class="col-lg-12 row m-4">
+            <div class="form-inline">
+                <form class="search-form">
+                    <input class="form-control mr-sm-2" type="text" name="search" placeholder="Search ..." aria-label="Search">
+                    <button class="col-m-4 btn btn-info" type="submit">Search</button>
+                </form>
             </div>
+            <!-- <div class="page-header float-left">
+            <form action="all_students.php" method="GET" class="col-m-12">
+                    <input class="col-m-4" type="text" placeholder="Search the stu..." name="search">
+                    <button class="col-m-4 btn btn-info" type="submit">Search</button>
+                </form>
+            </div> -->
+            <p class="col-m-4">
+                <?php if (isset($_GET['search'])) {
+                    echo "search for  " . $_GET['search'].'.....';
+                    $queryString = $connection->prepare("SELECT * from students where stu_name like '%" . $_GET['search'] . "%'"); //object
+                    $queryString->execute();
+                    $data = $queryString->fetchAll(PDO::FETCH_ASSOC); // array assoc
+                }
+                ?>
+            </p>
         </div>
-        <?php
-        //simple payload:<image src =q onerror=prompt(8)>
-        ?>
+    </div>
+    <?php
+    //simple payload:<image src =q onerror=prompt(8)>
+    ?>
 </div>
 <div class="content">
     <div class="animated fadeIn">
