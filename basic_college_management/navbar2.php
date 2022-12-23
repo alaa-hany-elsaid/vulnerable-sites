@@ -1,19 +1,6 @@
 <?php
-session_start();///TODO login as admin get 302 error
-if(isset($_SESSION['id'])){
-            $query =$connection->prepare("SELECT is_admin FROM admin where id=".$_SESSION['id']);
-            $query->execute();
-            $data=$query->fetchAll(PDO::FETCH_ASSOC);
-            $isAdmin=$data[0]['is_admin'];
-            // if($isAdmin == 0){
-            //     header("Location: index.php");
-            //     die();
-            // }
-  
-}else{
-    header("Location: page-login.php");
-    exit();
-}
+session_start();
+
 ?>
 <!doctype html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
@@ -49,37 +36,7 @@ if(isset($_SESSION['id'])){
 </head>
 
 <body>
-    <!-- Left Panel -->
 
-    <aside id="left-panel" class="left-panel">
-        <nav class="navbar navbar-expand-sm navbar-default">
-
-            <div id="main-menu" class="main-menu collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="index.php"><i class="menu-icon fa fa-laptop"></i>view all courses </a>
-                    </li>
-              
-                    <li class="menu-item-has-children dropdown">
-                    <?php     
-                    if($isAdmin == 1)   
-                     echo "<a href=\"all_students.php\" aria-haspopup=\"true\" aria-expanded=\"false\"> <i class=\"menu-icon fa fa-table\"></i>All Students</a>";
-                     ?>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                    <?php     
-                    if($isAdmin == 1)   
-                   
-                    echo "<a href=\"add_student.php\" > <i class=\"menu-icon fa fa-th\"></i>Add Student</a>";
-                        ?>
-                    </li>
-
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </nav>
-    </aside><!-- /#left-panel -->
-
-    <!-- Left Panel -->
 
     <!-- Right Panel -->
 

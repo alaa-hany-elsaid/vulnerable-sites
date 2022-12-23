@@ -2,39 +2,27 @@
 ob_start();
 include_once 'connection.php'; // connected
 include_once 'navbar.php';
-if(isset($_SESSION['id'])){
-    $query =$connection->prepare("SELECT is_admin FROM admin where id=".$_SESSION['id']);
-    $query->execute();
-    $data=$query->fetchAll(PDO::FETCH_ASSOC);
-    $isAdmin=$data[0]['is_admin'];
-    if($isAdmin == 0){
-        header("Location: index.php");
-        die();
-    }
-
-}
 if (isset($_POST['save'])) {
-    if (!empty($_POST['std_name']) && !empty($_POST['std_phone']) && !empty($_POST['std_email']) && !empty($_POST['std_address'])) {
-        $errors = [];
+    if (!empty($_POST['name']) && !empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['phone']) && !empty($_POST['password'])) {
+        
         function validate($input)
         {
             $input = htmlspecialchars($input);
             $input = trim($input);
             return $input;
         }
-        $std_name = validate($_POST['std_name']);
-        $std_phone = validate($_POST['std_phone']);
-        $std_email = validate($_POST['std_email']);
-        $std_address = /*validate(*/$_POST['std_address'];//);
-        //simple payload: <script>alert(1);</script>
+        $name = $_POST['name'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $password = sha1($_POST['password']);
+        $username = $_POST['username'];
+        $is_admin = $_POST['is_admin'];
 
-        if (!filter_var($std_email, FILTER_VALIDATE_EMAIL)) {
-            $errors['email'] = "please enter valid email";
-        }
+        $errors = [];
         if (empty($errors)) {
             try {
-                $queryString = $connection->prepare("INSERT INTO `students`(`stu_name`, `stu_phone`, `stu_mail`, `stu_address`) VALUES (?,?,?,?)");
-                $result = $queryString->execute([$std_name, $std_phone, $std_email, $std_address]);
+                $queryString = $connection->prepare("INSERT INTO `admin`(`id`,`name`, `username`, `password`, `email`, `phone`, `is_admin`) VALUES (?,?,?,?,?,?,?)");
+                $result = $queryString->execute([NULL, $name, $username, $password, $email, $phone, $is_admin]);
                 if ($result) {
                     header("location: all_students.php");
                     exit();
@@ -58,29 +46,46 @@ if (isset($_POST['save'])) {
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-header">
-                        <strong>Add Student</strong>
+                        <strong>Add Admin</strong>
                     </div>
                     <div class="card-body card-block">
                         <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
                             <div class="row form-group">
                                 <div class="col col-md-3"><label class=" form-control-label">Name</label></div>
-                                <div class="col-12 col-md-9"><input type="text" id="text-input" name="std_name" placeholder="Enter a student" class="form-control"><small class="form-text text-muted"></small></div>
+                                <div class="col-12 col-md-9"><input type="text" id="text-input" name="name" placeholder="Enter the full name..." class="form-control"><small class="form-text text-muted"></small></div>
                             </div>
                             <div class="row form-group">
-                                <div class="col col-md-3"><label class=" form-control-label">Phone</label></div>
-                                <div class="col-12 col-md-9"><input type="text" id="text-input" name="std_phone" placeholder="Enter a phone number..." class="form-control"><small class="form-text text-muted"></small></div>
+                                <div class="col col-md-3"><label class=" form-control-label">Username</label></div>
+                                <div class="col-12 col-md-9"><input type="text" id="text-input" name="username" placeholder="Enter the a username..." class="form-control"><small class="form-text text-muted"></small></div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3"><label class=" form-control-label">password</label></div>
+                                <div class="col-12 col-md-9"><input type="password" id="text-input" name="password" placeholder="Enter a Password" class="form-control"><small class="form-text text-muted"></small></div>
                             </div>
                             <div class="row form-group">
                                 <div class="col col-md-3"><label class=" form-control-label">Email</label></div>
-                                <div class="col-12 col-md-9"><input type="email" id="email-input" name="std_email" placeholder="Enter Email..." class="form-control"><small class="help-block form-text" style="color:red;"><?php if (isset($errors['email'])) {
+                                <div class="col-12 col-md-9"><input type="email" id="email-input" name="std_email" placeholder="Enter Email" class="form-control"><small class="help-block form-text" style="color:red;"><?php if (isset($errors['email'])) {
                                                                                                                                                                                                                                 echo $errors['email'];
                                                                                                                                                                                                                             } ?></small></div>
                             </div>
+                            
                             <div class="row form-group">
-                                <div class="col col-md-3"><label class=" form-control-label">Address</label></div>
-                                <div class="col-12 col-md-9"><textarea name="std_address" id="textarea-input" rows="9" placeholder="Address..." class="form-control"></textarea></div>
+                                <div class="col col-md-3"><label class=" form-control-label">Phone</label></div>
+                                <div class="col-12 col-md-9"><input type="text" id="text-input" name="phone" placeholder="Enter a phone number" class="form-control"><small class="form-text text-muted"></small></div>
                             </div>
+
+                           <div class="row form-group">
+                                <div class="col col-md-3"><label for="select" class=" form-control-label">Full Admin</label></div>
+                                <div class="col-12 col-md-9">
+                                    <select name="is_admin" id="select" class="form-control">
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        
                             <!-- <div class="row form-group">
                                 <div class="col col-md-3"><label for="select" class=" form-control-label">City</label></div>
                                 <div class="col-12 col-md-9">

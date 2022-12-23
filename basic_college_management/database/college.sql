@@ -28,36 +28,68 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin` (
+  `name` varchar(255) DEFAULT NULL,
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
   `is_admin` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `password`, `is_admin`) VALUES
-(1, 'admin', 'a9349d8d01822ae01a945d1e176cb7a72124f355', 1);
-
+INSERT INTO `admin` (`name`, `id`, `username`, `password`, `email`, `phone`, `is_admin`) VALUES
+('Alaa Hani', 1, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'admin@email.eml', ' (239) 816-9029 ', 1),
+('Ahmed Hamedo', 2, 'ahmed', '1698c2bea6c8000723d5bb70363a8352d846917e', 'ahmed@email.eml', ' (239) 832-2321 ', 1),
+('Ahmed Arafa', 3, 'arafa', '5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8', 'arafa@email.eml', ' (239) 816-4312', 0);
+('Ahmed Arafa', 4, 'stu1', 'b0f3617b08d7696999e8fb2ea5b02f31d7d5e4a4', 'arafa@email.eml', ' (239) 816-4312', 0);
 -- --------------------------------------------------------
 
---
--- Table structure for table `course`
---
 
 CREATE TABLE `course` (
   `course_id` int(11) NOT NULL,
   `course_name` varchar(100) DEFAULT NULL,
-  `doc_id` int(11) NOT NULL
+  `doc_id` int(11) NOT NULL,
+  `course_code` text NOT NULL,
+  `course_img` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `course`
+--
+
+INSERT INTO `course` (`course_id`, `course_name`, `doc_id`, `course_code`, `course_img`) VALUES
+(1, 'computer Arch', 1, 'cs322', 'images/logo2.png'),
+(2, 'complier', 2, 'cs419', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `course_comment`
+--
+
+CREATE TABLE `course_comment` (
+  `course_id` int(11) NOT NULL,
+  `stu_id` int(11) NOT NULL,
+  `comment` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `course_comment`
+--
+
+INSERT INTO `course_comment` (`course_id`, `stu_id`, `comment`) VALUES
+(1, 3, '<script>alert(\"hello from comment\");</script>'),
+(1, 2, 'this is awso course');
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `doctores`
 --
+
 
 CREATE TABLE `doctores` (
   `id` int(11) NOT NULL,
@@ -107,15 +139,21 @@ INSERT INTO `students` (`id`, `stu_name`, `stu_mail`, `stu_address`, `stu_phone`
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Indexes for table `course`
 --
 ALTER TABLE `course`
   ADD PRIMARY KEY (`course_id`),
   ADD KEY `dok_id` (`doc_id`);
+--
+-- Indexes for table `course_comment`
+--
+ALTER TABLE `course_comment`
+  ADD KEY `course_id` (`course_id`),
+  ADD KEY `fk_student_id` (`stu_id`);
 
+--
 --
 -- Indexes for table `doctores`
 --
@@ -170,7 +208,14 @@ ALTER TABLE `std_sup`
   ADD CONSTRAINT `fk_corse_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
   ADD CONSTRAINT `fk_std_id` FOREIGN KEY (`stu_id`) REFERENCES `students` (`id`);
 COMMIT;
+--
+-- Constraints for table `course_comment`
+--
+ALTER TABLE `course_comment`
+  ADD CONSTRAINT `course_id` FOREIGN KEY (`course_id`) REFERENCES `course` (`course_id`),
+  ADD CONSTRAINT `fk_student_id` FOREIGN KEY (`stu_id`) REFERENCES `students` (`id`);
 
+--
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
