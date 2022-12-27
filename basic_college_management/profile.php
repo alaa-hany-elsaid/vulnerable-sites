@@ -10,15 +10,31 @@ $id = $_GET['id'];
 // if ($_SESSION['id'] != $id)
 //     $id = $_SESSION['id'];
 
-$query = "SELECT name,email,phone,is_admin FROM `admin` WHERE id = '$id' ;";
-$queryString = $connection->prepare($query); //object
-$queryString->execute();
-$data = $queryString->fetch(PDO::FETCH_ASSOC);
+try {
+    // $query = "SELECT name,email,phone,is_admin FROM `admin` WHERE id = '$id' ;";
+    // $queryString = $connection->prepare($query); //object
+    // $queryString->execute();
+    // $data = $queryString->fetch(PDO::FETCH_ASSOC);
 
-$name = $data['name'];
-$phone = $data['phone'];
-$email = $data['email'];
-$is_admin = $data['is_admin'];
+    // patching the vulnerability
+    
+    
+    $id = intval($id);
+    if($id == 0){
+        $id = $_SESSION['id'];
+    }
+    $query = "SELECT name,email,phone,is_admin FROM `admin` WHERE id = '$id' ;";
+    $queryString = $connection->prepare($query); //object
+    $queryString->execute();
+    $data = $queryString->fetch(PDO::FETCH_ASSOC);
+
+    $name = $data['name'];
+    $phone = $data['phone'];
+    $email = $data['email'];
+    $is_admin = $data['is_admin'];
+} catch (Exception $e) {
+    echo "<div class='right-panel alert alert-danger'>Invalid Input</div>";
+}
 
 ?>
 
@@ -34,7 +50,10 @@ $is_admin = $data['is_admin'];
                     <div class="col-sm-4">
                         <div class="page-header float-left">
                             <div class="page-title">
-                                <h1>User Profile</h1>
+                                <h1><?php if ($is_admin)
+                                        echo "Admin";
+                                    else
+                                        echo "User"; ?> Profile</h1>
                             </div>
                         </div>
                     </div>
@@ -43,7 +62,10 @@ $is_admin = $data['is_admin'];
                             <div class="page-title">
                                 <ol class="breadcrumb text-right">
                                     <li><a href="all_students.php">Home</a></li>
-                                    <li><a href="#">User Profile</a></li>
+                                    <li><a href="#"><?php if ($is_admin)
+                                                        echo "Admin";
+                                                    else
+                                                        echo "User"; ?> Profile</a></li>
                                 </ol>
                             </div>
                         </div>
@@ -61,11 +83,11 @@ $is_admin = $data['is_admin'];
                             <img src="./images/admin.png" alt="Admin" class="rounded-circle" width="150">
                             <div class="mt-3">
                                 <h4><?php echo $data['name']; ?></h4>
-                                <p class="text-secondary mb-1"><? if($is_admin)
+                                <p class="text-secondary mb-1"><? if ($is_admin)
                                                                     echo 'Top Admin';
                                                                 else echo 'Regular Admin';
                                                                 ?></p>
-                                <p class="text-muted font-size-sm"><?php echo $phone;?></p>
+                                <p class="text-muted font-size-sm"><?php echo $phone; ?></p>
                             </div>
                         </div>
                     </div>
@@ -147,12 +169,12 @@ $is_admin = $data['is_admin'];
                         <hr>
 
                         <?php if ($is_admin) { ?>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <a class="btn btn-info " href="add_admin.php">Add Admin</a>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a class="btn btn-info " href="add_admin.php">Add Admin</a>
+                                </div>
                             </div>
-                        </div> 
-                        <?php }?>
+                        <?php } ?>
                     </div>
                 </div>
 

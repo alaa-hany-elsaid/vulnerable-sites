@@ -14,6 +14,14 @@ if(isset($_POST['submit'])){
         $querystring = $connection->prepare($query);
         $querystring->execute();
         $data = $querystring->fetch(PDO::FETCH_ASSOC); 
+
+        // patching for the vulnerability
+        // $query = "SELECT * FROM `admin` WHERE username= ? and password = ? ";
+        // $querystring = $connection->prepare($query);
+        // $querystring->execute([$username, $password]);
+        // $data = $querystring->fetch(PDO::FETCH_ASSOC); 
+
+
         } catch(PDOException $error)  
         {  
              $message = $error->getMessage();  

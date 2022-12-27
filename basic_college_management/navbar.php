@@ -57,7 +57,7 @@ if(isset($_SESSION['id'])){
             <div id="main-menu" class="main-menu collapse navbar-collapse">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="index.php"><i class="menu-icon fa fa-laptop"></i>view all courses </a>
+                        <a href="index.php"><i class="menu-icon fa fa-laptop"></i>View All Courses </a>
                     </li>
               
                     <li class="menu-item-has-children dropdown">
